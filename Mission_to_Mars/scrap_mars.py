@@ -1,34 +1,40 @@
-#Libraries and dependencies
-import pandas as pd
-from bs4 import BeautifulSoup as bs
-import requests
-from splinter import Browser
-from webdriver_manager.chrome import ChromeDriverManager
-
 def scraper():
+
+    #Libraries and dependencies
+    import pandas as pd
+    from bs4 import BeautifulSoup as bs
+    import requests
+    from splinter import Browser
+    from webdriver_manager.chrome import ChromeDriverManager
 
     mars_info = {}
 
     ######################################################
     ### Scrap Mars News Website 
 
-    #Prepare soup
+    #set splinter and prepare soup
+    executable_path = {'executable_path': ChromeDriverManager().install()}
+    browser = Browser('chrome', **executable_path, headless=False)
     url = 'https://redplanetscience.com/'
-    response = requests.get(url)
-    soup = bs(response.text, 'html.parser')
+    browser.visit(url)
+    html = browser.html
+    soup = bs(html, 'html.parser')
+    browser.quit()
 
-    #Find data
+    #extract data
     dates = soup.find_all('div', class_= 'list_date')
     titles = soup.find_all('div', class_= 'content_title')
     paragraphs = soup.find_all('div', class_= 'list_date')
 
-    #Save data
-    news = []
-    news.append({
-        'date': dates[i],
-        'title': titles[i],
-        'paragraph': paragraphs[i]
-    })
+    #save data
+    news= []
+    for i in range(0, len(dates)):
+        news.append({
+            'date': dates[i].text,
+            'title': titles[i].text,
+            'paragraph': paragraphs[i].text
+        })
+    
     mars_info['news'] = news
 
     ######################################################
