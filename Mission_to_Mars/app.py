@@ -30,8 +30,7 @@ def scrape():
     mars_info = scrap_mars.scraper()
 
     #update data in mongodb
-    collection.drop()
-    collection.insert_many(mars_info)
+    scrap_data.update({}, mars_info, upsert=True)
 
     # Redirect back to home page
     return redirect("/")

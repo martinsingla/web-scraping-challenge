@@ -66,7 +66,7 @@ def scraper():
     fact_table = tables[0]
     fact_table.columns = ['Comparison', 'Mars', 'Earth']
     fact_table = fact_table.iloc[1:len(fact_table),:]
-    fact_table = fact_table.set_index('Comparison')
+    fact_table = fact_table.to_dict()
 
     #save data
     mars_info['fact_table'] = fact_table
