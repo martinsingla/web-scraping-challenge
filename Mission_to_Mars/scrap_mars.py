@@ -24,7 +24,7 @@ def scraper():
     #extract data
     dates = soup.find_all('div', class_= 'list_date')
     titles = soup.find_all('div', class_= 'content_title')
-    paragraphs = soup.find_all('div', class_= 'list_date')
+    paragraphs = soup.find_all('div', class_= 'article_teaser_body')
 
     #save data
     news= []
